@@ -7,8 +7,8 @@ import TextToSpeechComponent from '../TextToSpeechComponent';
 
 function Quiz() {
 
-const usedVerbs: string[] = [];
-let options: string[] = [];
+
+
 
 const answers = ["To Go", "To Do", "To Talk", "To Write", "To Have", "To Come", "To Listen", "To Fall Asleep", "To Work", "To Give"];
 
@@ -17,42 +17,40 @@ const [verb, setVerb] = useState<string>('');
 const [english, setEnglish] = useState<string>('');
 const [randomAnswer, setRandomAnswer] = useState<number>(0);
 const [started, setStarted] = useState(false);
-
+const [usedVerbs, setUsedVerbs] = useState<any>([])
+const [options, setOptions] = useState<any>([])
 const func = () =>{
 const handleVerb = () =>{
 setRandomNumber(Math.floor(Math.random() * 10) + 1); //random number for random verb from the object
-if (Verbs[randomNumber].Korean in usedVerbs){ //if the verb has already appeared it restarts the function
+if (usedVerbs.includes(Verbs[randomNumber].Korean)){ //if the verb has already appeared it restarts the function
     handleVerb();
 } else { //if the verb hasnt already been used, it displays
     setVerb(Verbs[randomNumber].Korean)
     setEnglish(Verbs[randomNumber].English)
-    usedVerbs.push(verb) //sets that verb as used
-    options.push(english) //puts that verbs english as an option for an answer 
+    setUsedVerbs([...usedVerbs, Verbs[randomNumber].Korean]) //sets that verb as used
+    setOptions([...options, Verbs[randomNumber].English]) //puts that verbs english as an option for an answer 
+    console.log(verb)
+    console.log(usedVerbs)
+    console.log(options)
 }
 }
 handleVerb();
 const addOptions = () =>{
-if (english in options){ //checks that the correct answer was added to options
-    setRandomAnswer(Math.floor(Math.random() * 10) + 1) //generates a random index 
-    if (answers[randomAnswer] in options){ //if the word is already in the options it restarts the function
+    setRandomAnswer(Math.floor(Math.random() * 10) + 1);
+    if(options.length < 4){
+        setOptions([...options, answers[randomAnswer]]);
         addOptions();
-    } else {
-        options.push(answers[randomAnswer]) //adds the answer as an option
-        if (options.length < 5){ //keeps recalling the function until there are 4 options
-            addOptions();
-        }
-    }
     }
     }
     addOptions();
 }
 const handleNext = () =>{
-    options = [];
+    setOptions([]);
     func();
 }
 const handleStart = () =>{
-    setStarted(true);
-    //func(); 
+    
+    func(); 
 }
 
 
