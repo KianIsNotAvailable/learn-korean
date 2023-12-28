@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import AWS from './aws-config';
 
-const TextToSpeechComponent = () => {
+const TextToSpeechComponent = (props) => {
   const [text, setText] = useState('');
   const [audioUrl, setAudioUrl] = useState('');
 
@@ -12,7 +12,7 @@ const TextToSpeechComponent = () => {
     const params = {
       OutputFormat: 'mp3',
       Text: text,
-      VoiceId: 'Joanna', // Specify the voice you want to use
+      VoiceId: 'Seoyeon', // Specify the voice you want to use
     };
 
     try {
@@ -25,9 +25,7 @@ const TextToSpeechComponent = () => {
 
   return (
     <div>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} />
-      <button onClick={handleTextToSpeech}>Generate Audio</button>
-      {audioUrl && <audio controls src={audioUrl} />}
+      <h1 text={props}></h1>
     </div>
   );
 };

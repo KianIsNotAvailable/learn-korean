@@ -18,7 +18,20 @@ const [started, setStarted] = useState(false);
 const [usedVerbs, setUsedVerbs] = useState<any>([]);
 const [options, setOptions] = useState<any>([]);
 const [english, setEnglish] = useState<string>('');
-
+const [answered, setAnswered] = useState(false);
+const [incorrect, setIncorrect] = useState<any>([]);
+const [finished, setFinished] = useState(false)
+const [box, setBox] = useState<any>(null);
+const [boxID, setBoxID] = useState<any>(null);
+//options boxes inner html
+const box1 = document.getElementById('box1')?.innerHTML;
+const box2 = document.getElementById('box2')?.innerHTML;
+const box3 = document.getElementById('box3')?.innerHTML;
+const box4 = document.getElementById('box4')?.innerHTML;
+const boxID1 = document.getElementById('box1');
+const boxID2 = document.getElementById("box2");
+const boxID3 = document.getElementById('box3');
+const boxID4 = document.getElementById('box4');
 
 const handleVerb = () =>{
 setRandomNumber(Math.floor(Math.random() * 10) + 1); //random number for random verb from the object
@@ -66,23 +79,18 @@ const handleNext = () =>{
    setOptions(options.length = 0)
     setOptionsProcessed(false);
     handleVerb();
-    
+    const boxIDArray: any = [boxID1, boxID2, boxID3, boxID4];
+    for(let i = 0; i < boxIDArray.length; i++){
+        boxIDArray[i].style.backgroundColor = '#333'
+    }
+    setAnswered(false);
 }
 const handleStart = () =>{
     setStarted(true)
     handleVerb();
 }
 
-const [box, setBox] = useState<any>(null);
-const [boxID, setBoxID] = useState<any>(null);
-const box1 = document.getElementById('box1')?.innerHTML;
-const box2 = document.getElementById('box2')?.innerHTML;
-const box3 = document.getElementById('box3')?.innerHTML;
-const box4 = document.getElementById('box4')?.innerHTML;
-const boxID1 = document.getElementById('box1');
-const boxID2 = document.getElementById("box2");
-const boxID3 = document.getElementById('box3');
-const boxID4 = document.getElementById('box4')
+
 const handleBox1 = () =>{
 setBox(box1)
 setBoxID(boxID1);
@@ -107,26 +115,31 @@ handleAnswer();
 const handleAnswer = () =>{
     
 
-    if(box === english){
+    if(box === english && !answered){
          boxID.style.backgroundColor = 'green'; //if you click the correct answer it goes green
-    } else {
+         setAnswered(true)
+    } else if (box !== english && !answered) {
         boxID.style.backgroundColor = 'red'; //if you click the wrong answer it goes red
         const boxArray: any = [box1, box2, box3, box4];
         const boxIDArray: any = [boxID1, boxID2, boxID3, boxID4];
         for(let i = 0; i < boxArray.length; i++){ //loops through the different boxes to check which is the correct english
-            if(boxArray[i] == english && boxIDArray[i]){ //if it finds the correct english it sets the boxID with corresponding index in array to amber
+            if(boxArray[i] === english && boxIDArray[i]){ //if it finds the correct english it sets the boxID with corresponding index in array to amber
                 boxIDArray[i].style.backgroundColor = 'orange';
             }
         }
-        
+        setAnswered(true);
+        setIncorrect([...incorrect, verb]);
     }
 }
 
+const handleFinish = () =>{
 
+setFinished(true)
+}
 
   return (
     <div> 
-        {!started && <div className='start-page'>
+        {!started && !finished && <div className='start-page'>
             <h1>Review the Korean verbs and their meaning in English then when you're ready, press start.</h1>
             <table>
                 <th>Korean</th>
@@ -144,7 +157,7 @@ const handleAnswer = () =>{
             </table>
             <button onClick={handleStart}>Start</button>
         </div>}
-        {started && <div className='questions'>
+        {started && !finished &&<div className='questions'>
         <div className='korean'>
         <h1>{verb}</h1>
         <img src={Speaker}/>
@@ -157,10 +170,14 @@ const handleAnswer = () =>{
         <h1 className='box' id='box4' onClick={handleBox4}>{options[3]}</h1>
         </div>
         <div>
-            <button onClick={handleNext}>Next</button>
+            { usedVerbs.length < 9 ? <button onClick={handleNext}>Next</button> :
+            <button onClick={handleFinish}>Finish</button>}
         </div>
         </div>}
-        
+        {finished && <div className='results-page'>
+        <h1>Score</h1>
+        <h1>Incorrect</h1>
+        </div>}
     </div>
   )
 }
