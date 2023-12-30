@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Verbs from '../verbs';
 import './quiz.css';
 import Speaker from '../images/speaker.png';
-
+import { synthesizeSpeech } from '../TextToSpeechComponent'
 function Quiz() {
   const answers = ["To Go", "To Do", "To Talk", "To Write", "To Have", "To Come", "To Listen", "To Fall Asleep", "To Work", "To Give"];
 
@@ -126,9 +126,11 @@ function Quiz() {
     setFinished(true)
   }
   const handleTryAgain = () =>{
-    window.location.reload();
-    
+    window.location.reload(); 
   }
+  /*const handleAudio = () =>{
+    synthesizeSpeech(verb)
+  }*/
   return (
     <div>
       {!started && !finished && (

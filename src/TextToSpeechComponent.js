@@ -1,33 +1,34 @@
 // TextToSpeechComponent.js
-import React, { useState } from 'react';
-import AWS from './aws-config';
 
-const TextToSpeechComponent = (props) => {
-  const [text, setText] = useState('');
-  const [audioUrl, setAudioUrl] = useState('');
 
-  const handleTextToSpeech = async () => {
-    const polly = new AWS.Polly();
+import AWS from 'aws-sdk';
+import dotenv from 'dotenv';
+dotenv.config();
 
-    const params = {
-      OutputFormat: 'mp3',
-      Text: text,
-      VoiceId: 'Seoyeon', // Specify the voice you want to use
-    };
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+  region: 'eu-north-1',
+});
 
-    try {
-      const result = await polly.synthesizeSpeech(params).promise();
-      setAudioUrl(URL.createObjectURL(new Blob([result.AudioStream])));
-    } catch (error) {
-      console.error('Error synthesizing speech:', error);
-    }
+const Polly = new AWS.Polly();
+
+export const synthesizeSpeech = async (text) => {
+  const params = {
+    OutputFormat: 'mp3',
+    Text: text,
+    TextType: 'text',
+    VoiceId: 'Seoyeon', 
+    LanguageCode: 'ko-KR', 
   };
 
-  return (
-    <div>
-      <h1 text={props}></h1>
-    </div>
-  );
+  try {
+    const data = await Polly.synthesizeSpeech(params).promise();
+    const audioBlob = new Blob([data.AudioStream], { type: 'audio/mpeg' });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    return audioUrl;
+  } catch (error) {
+    console.error('Error synthesizing speech:', error);
+    throw error;
+  }
 };
-
-export default TextToSpeechComponent;
