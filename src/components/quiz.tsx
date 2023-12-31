@@ -204,7 +204,7 @@ function Quiz() {
             ))}
           </div>
           <div>
-            {usedVerbs.length < 9 ? (
+            {usedVerbs.length < 10 ? (
               <button onClick={handleNext}>Next</button>
             ) : (
               <button onClick={handleFinish}>Finish</button>
