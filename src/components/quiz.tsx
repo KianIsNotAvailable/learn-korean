@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Verbs from '../verbs';
 import './quiz.css';
-import Speaker from '../images/speaker.png';
-import { synthesizeSpeech } from '../TextToSpeechComponent'
+import TextToSpeechComponent from '../TextToSpeechComponent'
 function Quiz() {
   const answers = ["To Go", "To Do", "To Talk", "To Write", "To Have", "To Come", "To Listen", "To Fall Asleep", "To Work", "To Give"];
 
@@ -128,9 +127,7 @@ function Quiz() {
   const handleTryAgain = () =>{
     window.location.reload(); 
   }
-  /*const handleAudio: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    synthesizeSpeech(verb);
-  };*/
+  
   return (
     <div>
       {!started && !finished && (
@@ -188,9 +185,8 @@ function Quiz() {
       )}
       {started && !finished && (
         <div className='questions'>
-          <div className='korean' >
-            <h1>{verb}</h1>
-            <img src={Speaker}  alt='Speaker Icon' />
+          <div className='korean'>
+            <TextToSpeechComponent text={verb}/>
           </div>
           <div className='english'>
             {boxes.map((box) => (
