@@ -5,8 +5,8 @@ import AWS from 'aws-sdk';
 import Speaker from './images/speaker.png'
 
 AWS.config.update({
-  accessKeyId: REACT_APP_ACCESS_KEY,
-  secretAccessKey: REACT_APP_SECRET_ACCESS_KEY,
+  accessKeyId: 'AKIA2AHDZUT2P22KCUUE',
+  secretAccessKey: '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',
   region: 'eu-north-1',
 });
 
