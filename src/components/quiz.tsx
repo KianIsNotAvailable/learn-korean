@@ -128,9 +128,9 @@ function Quiz() {
   const handleTryAgain = () =>{
     window.location.reload(); 
   }
-  const handleAudio: React.MouseEventHandler<HTMLDivElement> = (event) => {
+  /*const handleAudio: React.MouseEventHandler<HTMLDivElement> = (event) => {
     synthesizeSpeech(verb);
-  };
+  };*/
   return (
     <div>
       {!started && !finished && (
@@ -188,7 +188,7 @@ function Quiz() {
       )}
       {started && !finished && (
         <div className='questions'>
-          <div className='korean' onClick={handleAudio}>
+          <div className='korean' >
             <h1>{verb}</h1>
             <img src={Speaker}  alt='Speaker Icon' />
           </div>
