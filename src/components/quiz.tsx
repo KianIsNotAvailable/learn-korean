@@ -30,7 +30,7 @@ function Quiz() {
     setStarted(true);
     handleVerb();
   };
-
+// gets a random verb and its english translation and sets the verb as used and adds the english as an optional answer
   const handleVerb = () => {
     setRandomNumber((prevRandomNumber) => {
       const newRandomNumber = Math.floor(Math.random() * 10) + 1;
@@ -47,7 +47,7 @@ function Quiz() {
       return newRandomNumber;
     });
   };
-
+// the other 3 options are random options from the list that are not repeats
   const addOptions = () => {
     let newOptions = [...options];
 
@@ -61,7 +61,7 @@ function Quiz() {
 
     setOptions(newOptions);
   };
-
+//adds the options once the state of options has updated
   const [optionsProcessed, setOptionsProcessed] = useState(false);
   useEffect(() => {
     if (options.length > 0 && !optionsProcessed) {
@@ -69,7 +69,7 @@ function Quiz() {
       setOptionsProcessed(true);
     }
   }, [options, optionsProcessed]);
-
+// resets everything after you click next
   const handleNext = () => {
     const resetBoxes = boxes.map((box) => ({ ...box, status: '' }));
     setBoxes(resetBoxes);
@@ -79,14 +79,14 @@ function Quiz() {
     handleVerb();
     setAnswered(false);
   };
-
+//creates the 4 boxes for the answers
   const [boxes, setBoxes] = useState([
     { id: 1, content: '', status: '' },
     { id: 2, content: '', status: '' },
     { id: 3, content: '', status: '' },
     { id: 4, content: '', status: '' },
   ]);
-
+// shuffles the options array so that the positions are random
   useEffect(() => {
     if (options.length > 0) {
         const shuffledOptions = shuffleArray(options);
@@ -98,9 +98,9 @@ function Quiz() {
       );
     }
   }, [options]);
-
+// checks what box was clicked, if its content === the correct answer its status is correct which makes it green
+//if its incorrect the status is incorrect which makes it red and then the correct status would be pending which makes it orange
   const correctAnswer = english;
-
   const checkAnswer = (box: { id: any; content?: string; status?: string; }) => {
     const updatedBoxes = boxes.map((b) => {
       if (b.id === box.id) {
